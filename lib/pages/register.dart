@@ -33,7 +33,7 @@ class _RegisterState extends State<Register> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -45,8 +45,8 @@ class _RegisterState extends State<Register> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30.0),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 30.0),
                       child: Text(
                         'Register User',
                         style: TextStyle(
@@ -62,7 +62,7 @@ class _RegisterState extends State<Register> {
                         labelText: 'Please enter your username',
                       ),
                     ),
-                    Text(
+                    const Text(
                       'username exists, please choose another',
                       style: TextStyle(
                           color: Colors.red, fontWeight: FontWeight.w800),
@@ -74,9 +74,10 @@ class _RegisterState extends State<Register> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.purple),
+                        style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.purple),
                         onPressed: () async {},
-                        child: Text('Register'),
+                        child: const Text('Register'),
                       ),
                     ),
                   ],
@@ -91,7 +92,7 @@ class _RegisterState extends State<Register> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
                 size: 30,
                 color: Colors.white,
@@ -117,7 +118,7 @@ class AppProgressIndicator extends StatelessWidget {
         child: Container(
           height: 20,
           width: 20,
-          child: CircularProgressIndicator(
+          child: const CircularProgressIndicator(
             color: Colors.purple,
           ),
         ),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:todo_app/pages/register.dart';
+import 'package:todo_app/pages/todo_page.dart';
 
 import '../routes/routes.dart';
 import '../widgets/app_textfield.dart';
@@ -7,6 +10,7 @@ class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginState createState() => _LoginState();
 }
 
@@ -59,7 +63,7 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.only(top: 12.0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      Navigator.of(context).pushNamed(RouteManager.todoPage);
+                      Get.to(const TodoPage());
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.purple,
@@ -72,7 +76,7 @@ class _LoginState extends State<Login> {
                     foregroundColor: Colors.white,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushNamed(RouteManager.registerPage);
+                    Get.to(const Register());
                   },
                   child: const Text('Register a new User'),
                 ),
