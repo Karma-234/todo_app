@@ -146,14 +146,17 @@ class TodoCard extends StatelessWidget {
     return Card(
       color: Colors.purple.shade300,
       child: Slidable(
-        endActionPane: ActionPane(motion: const DrawerMotion(), children: [
-          SlidableAction(
-            label: 'Delete',
-            foregroundColor: Colors.purple[600],
-            icon: Icons.delete,
-            onPressed: (BuildContext context) {},
-          ),
-        ]),
+        endActionPane: ActionPane(
+            motion: const DrawerMotion(),
+            extentRatio: 0.3,
+            children: [
+              SlidableAction(
+                label: 'Delete',
+                backgroundColor: Colors.purple,
+                icon: Icons.delete,
+                onPressed: (BuildContext context) {},
+              ),
+            ]),
         child: CheckboxListTile(
           checkColor: Colors.purple,
           activeColor: Colors.purple[100],

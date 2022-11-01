@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.only(top: 12.0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      Get.to(const TodoPage());
+                      Get.toNamed(RouteManager.todoPage);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.purple,
@@ -76,7 +76,7 @@ class _LoginState extends State<Login> {
                     foregroundColor: Colors.white,
                   ),
                   onPressed: () {
-                    Get.to(const Register());
+                    Get.toNamed(RouteManager.registerPage);
                   },
                   child: const Text('Register a new User'),
                 ),

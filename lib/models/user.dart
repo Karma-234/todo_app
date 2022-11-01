@@ -1,3 +1,5 @@
+final String usertable = 'user';
+
 class UserFields {
   static final String username = 'username';
   static final String name = 'name';
@@ -12,4 +14,13 @@ class User {
     required this.username,
     required this.name,
   });
+
+  Map<String, Object?> toJson() => {
+        UserFields.username: username,
+        UserFields.name: name,
+      };
+
+  static User fromJson(Map<String, Object?> json) => User(
+      username: json[UserFields.username] as String,
+      name: json[UserFields.name] as String);
 }
