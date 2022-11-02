@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/models/user.dart';
+import 'package:todo_app/services/user_service.dart';
+import 'package:todo_app/widgets/dialogs.dart';
 
 import '../widgets/app_textfield.dart';
 
@@ -56,16 +61,38 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     Focus(
-                      onFocusChange: (value) async {},
+                      onFocusChange: (value) async {
+                        if (!value) {
+                          String result = await context
+                              .read<UserService>()
+                              .checkIfUserExists(
+                                  usernameController.text.trim());
+                          if (result == 'OK') {
+                            context.read<UserService>().userExists = true;
+                          } else {
+                            context.read<UserService>().userExists = false;
+                            if (!result.contains(
+                                'The user does not exist in the database. Please register first.')) {
+                              showSnackBar(context, result);
+                            } else {}
+                          }
+                        }
+                      },
                       child: AppTextField(
                         controller: usernameController,
                         labelText: 'Please enter your username',
                       ),
                     ),
-                    const Text(
-                      'username exists, please choose another',
-                      style: TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.w800),
+                    Selector<UserService, bool>(
+                      selector: (context, value) => value.userExists,
+                      builder: (context, value, child) => value
+                          ? const Text(
+                              'username exists, please choose another',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w800),
+                            )
+                          : Container(),
                     ),
                     AppTextField(
                       controller: nameController,
@@ -76,7 +103,27 @@ class _RegisterState extends State<Register> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.purple),
-                        onPressed: () async {},
+                        onPressed: () async {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          if (usernameController.text.isEmpty ||
+                              nameController.text.isEmpty) {
+                            showSnackBar(context, 'Please enter all fields');
+                          } else {
+                            User user = User(
+                                username: usernameController.text.trim(),
+                                name: nameController.text.trim());
+                            String result = await context
+                                .read<UserService>()
+                                .createUser(user);
+                            if (result != 'OK') {
+                              showSnackBar(context, result);
+                            } else {
+                              showSnackBar(context, 'New User created!');
+
+                              Get.back();
+                            }
+                          }
+                        },
                         child: const Text('Register'),
                       ),
                     ),
@@ -99,6 +146,12 @@ class _RegisterState extends State<Register> {
               ),
             ),
           ),
+          Selector<UserService, bool>(
+            selector: (context, value) => value.busycreate,
+            builder: (context, value, child) {
+              return value ? const AppProgressIndicator() : Container();
+            },
+          )
         ],
       ),
     );

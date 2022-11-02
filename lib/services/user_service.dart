@@ -8,7 +8,7 @@ class UserService with ChangeNotifier {
   bool _busyCreate = false;
   bool _userexists = false;
 
-  User get currenUser => _currentUser;
+  User get currentUser => _currentUser;
   bool get userExists => _userexists;
   bool get busycreate => _busyCreate;
 
@@ -18,37 +18,41 @@ class UserService with ChangeNotifier {
   }
 
   Future<String> getUser(String username) async {
+    String result = 'OK';
     try {
       _currentUser = await TodoDatabase.instance.getUser(username);
       notifyListeners();
     } catch (e) {
       return e.toString();
     }
-    return "OK";
+    return result;
   }
 
   Future<String> checkIfUserExists(String username) async {
+    String result = 'OK';
     try {
       await TodoDatabase.instance.getUser(username);
       notifyListeners();
     } catch (e) {
       return e.toString();
     }
-    return "OK";
+    return result;
   }
 
   Future<String> updateCurrentUser(String name) async {
     _currentUser.name = name;
+    String result = 'OK';
     notifyListeners();
     try {
       await TodoDatabase.instance.updateUser(_currentUser);
     } catch (e) {
       return e.toString();
     }
-    return 'OK';
+    return result;
   }
 
   Future<String> createUser(User user) async {
+    String result = 'OK';
     _busyCreate = true;
     notifyListeners();
     try {
@@ -58,7 +62,7 @@ class UserService with ChangeNotifier {
     }
     _busyCreate = false;
     notifyListeners();
-    return 'OK';
+    return result;
   }
 }
 

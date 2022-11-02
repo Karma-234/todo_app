@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/pages/register.dart';
 import 'package:todo_app/pages/todo_page.dart';
+import 'package:todo_app/services/user_service.dart';
+import 'package:todo_app/widgets/dialogs.dart';
 
 import '../routes/routes.dart';
+import '../services/todo_service.dart';
 import '../widgets/app_textfield.dart';
 
 class Login extends StatefulWidget {
@@ -63,7 +67,22 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.only(top: 12.0),
                   child: ElevatedButton(
                     onPressed: () async {
-                      Get.toNamed(RouteManager.todoPage);
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      if (usernameController.text.isEmpty) {
+                        showSnackBar(context, 'Please enter username');
+                      } else {
+                        String result = await context
+                            .read<UserService>()
+                            .getUser(usernameController.text.trim());
+                        if (result != 'OK') {
+                          showSnackBar(context, result);
+                        } else {
+                          String username =
+                              context.read<UserService>().currentUser.username;
+                          context.read<TodoService>().getTodos(username);
+                          Get.toNamed(RouteManager.todoPage);
+                        }
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.purple,
